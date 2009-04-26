@@ -14,7 +14,7 @@ The details about the thrown exceptions are sent via email.
       symfony plugin:install sfErrorNotifierPlugin
     }}}
 
-  * Set the email address(es) to deliver the notifications for the environments you want to enable (tipically only 'prod') in your `app.yml` of the plugin (located in the plugin config directory)
+  * Set the email address(es) to deliver the notifications to, for the environments you want to enable (tipically only 'prod') in the `app.yml` of the plugin (located in the config directory)
 
     {{{
       prod:
