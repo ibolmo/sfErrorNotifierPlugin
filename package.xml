@@ -13,8 +13,8 @@
  <date>2009-04-26</date>
  <time>18:20:23</time>
  <version>
-  <release>1.0.0</release>
-  <api>1.0.0</api>
+  <release>1.0.1</release>
+  <api>1.0.1</api>
  </version>
  <stability>
   <release>stable</release>
@@ -27,7 +27,7 @@
    <file md5sum="fe6c8905ee6f0abe8917eb45ae7b928f" name="config/app.yml" role="data"/>
    <file md5sum="54bed82dce3d89dc80a91191019aed87" name="config/config.php" role="data"/>
    <file md5sum="b3cf21c447d913ef3b1e4f693c98d4bc" name="lib/sfErrorNotifier.php" role="data"/>
-   <file md5sum="9d4b61460e3ef3f1c38e6b352e50c012" name="README" role="data"/>
+   <file md5sum="8f055f26ff5bb76118c28487fdc71834" name="README" role="data"/>
    <file md5sum="720af3ce0a0fdd75e8231d599250f36a" name="LICENSE" role="data"/>
   </dir>
  </contents>
@@ -39,7 +39,13 @@
    <pearinstaller>
     <min>1.4.1</min>
    </pearinstaller>
-   
+    <package>
+      <name>symfony</name>
+      <channel>pear.symfony-project.com</channel>
+      <min>1.0.0</min>
+      <max>1.3.0</max>
+      <exclude>1.3.0</exclude>
+    </package>
   </required>
  </dependencies>
  <phprelease/>
