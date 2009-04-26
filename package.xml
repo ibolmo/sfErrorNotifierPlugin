@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" packagerversion="1.7.1" version="2.0" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+ <name>sfErrorNotifierPlugin</name>
+ <channel>plugins.symfony-project.org</channel>
+ <summary>Sends email notifications when application errors (exceptions) occur.</summary>
+ <description>Sends email notifications when application errors (exceptions) occur. Its easy configuration allows you set which environments to enable for the notifications. The details about the thrown exceptions are sent via email.</description>
+ <lead>
+  <name>Daniele Occhipinti</name>
+  <user>danieleocchipinti</user>
+  <email>danieleocchipinti.it@gmail.com</email>
+  <active>yes</active>
+ </lead>
+ <date>2009-04-26</date>
+ <time>18:20:23</time>
+ <version>
+  <release>1.0.0</release>
+  <api>1.0.0</api>
+ </version>
+ <stability>
+  <release>stable</release>
+  <api>stable</api>
+ </stability>
+ <license uri="http://www.symfony-project.com/license">MIT license</license>
+ <notes>-</notes>
+ <contents>
+  <dir name="/">
+   <file md5sum="fe6c8905ee6f0abe8917eb45ae7b928f" name="config/app.yml" role="data"/>
+   <file md5sum="54bed82dce3d89dc80a91191019aed87" name="config/config.php" role="data"/>
+   <file md5sum="b3cf21c447d913ef3b1e4f693c98d4bc" name="lib/sfErrorNotifier.php" role="data"/>
+   <file md5sum="9d4b61460e3ef3f1c38e6b352e50c012" name="README" role="data"/>
+   <file md5sum="720af3ce0a0fdd75e8231d599250f36a" name="LICENSE" role="data"/>
+  </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.0.0</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.1</min>
+   </pearinstaller>
+   
+  </required>
+ </dependencies>
+ <phprelease/>
+ <changelog/>
+</package>

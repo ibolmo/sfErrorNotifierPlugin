@@ -1,0 +1,3 @@
+prod:
+  sfErrorNotifier:
+    email:      errors_notification@mysite.com
