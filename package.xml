@@ -3,7 +3,7 @@
  <name>sfErrorNotifierPlugin</name>
  <channel>plugins.symfony-project.org</channel>
  <summary>Sends email notifications when application errors (exceptions) occur.</summary>
- <description>Sends email notifications when application errors (exceptions) occur. Its easy configuration allows you set which environments to enable for the notifications. The details about the thrown exceptions are sent via email.</description>
+ <description>Sends email notifications when application errors (exceptions) occur. Its easy configuration allows you to set which environments to enable for the notifications. The details about the thrown exceptions are sent via email.</description>
  <lead>
   <name>Daniele Occhipinti</name>
   <user>danieleocchipinti</user>
@@ -13,8 +13,8 @@
  <date>2009-04-26</date>
  <time>18:20:23</time>
  <version>
-  <release>1.0.1</release>
-  <api>1.0.1</api>
+  <release>1.0.2</release>
+  <api>1.0.2</api>
  </version>
  <stability>
   <release>stable</release>
@@ -26,8 +26,8 @@
   <dir name="/">
    <file md5sum="fe6c8905ee6f0abe8917eb45ae7b928f" name="config/app.yml" role="data"/>
    <file md5sum="54bed82dce3d89dc80a91191019aed87" name="config/config.php" role="data"/>
-   <file md5sum="b3cf21c447d913ef3b1e4f693c98d4bc" name="lib/sfErrorNotifier.php" role="data"/>
-   <file md5sum="8f055f26ff5bb76118c28487fdc71834" name="README" role="data"/>
+   <file md5sum="55efce2a530fb37be2788434a98ce149" name="lib/sfErrorNotifier.php" role="data"/>
+   <file md5sum="7ce173ba7d35e9c30aa46f3539016175" name="README" role="data"/>
    <file md5sum="720af3ce0a0fdd75e8231d599250f36a" name="LICENSE" role="data"/>
   </dir>
  </contents>

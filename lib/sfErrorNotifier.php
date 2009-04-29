@@ -40,8 +40,8 @@ class sfErrorNotifier
     $data['actionName'] = $context->getActionName();
     $data['uri'] = $context->getRequest()->getUri();
 	
-    $subject = "Exception - $env - {$data['message']}";
-    $body = "Exception notification for the environment $env - " . date('H:i:s j F Y'). "\n\n";
+    $subject = "ERROR: {$_SERVER['HTTP_HOST']} Exception - $env - {$data['message']}";
+    $body = "Exception notification for {$_SERVER['HTTP_HOST']}, environment $env - " . date('H:i:s j F Y'). "\n\n";
     $body .= $exception . "\n\n\n\n\n";
     $body .= "Additional data: \n\n";
     foreach($data as $key => $value)

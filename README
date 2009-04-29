@@ -2,7 +2,7 @@
 
 The `sfErrorNotifierPlugin` sends email notifications when application errors (exceptions) occur.
 
-Its easy configuration allows you set which environments to enable for the notifications.
+Its easy configuration allows you to set which environments to enable for the notifications.
 
 The details about the thrown exceptions are sent via email.
 
@@ -14,7 +14,7 @@ The details about the thrown exceptions are sent via email.
       symfony plugin:install sfErrorNotifierPlugin
     }}}
 
-  * Set the email address(es) to deliver the notifications to, for the environments you want to enable (tipically only 'prod') in the `app.yml` of the plugin (located in the config directory)
+  * In the file /plugins/sfErrorNotifierPlugin/config/app.yml,  set the email address(es) to deliver the notifications to, for the environments you want to enable (tipically only 'prod')
 
     {{{
       prod:
@@ -28,4 +28,19 @@ The details about the thrown exceptions are sent via email.
       symfony cc
     }}}
 
+  * Some members told me they needed to override the default error page in order to get this plugin to work. You shouldn't need that, but just in case the plugin doesn't work, try to do it. The way to set a custom error page is explained in the Symfony books.
+
   * You're done.
+
+== Changelog ==
+
+=== 2009-04-30 | 1.0.2 ===
+*Improved the documentation
+*Made the email subject more explanatory
+
+=== 2009-04-27 | 1.0.1 ===
+*Improved the documentation
+
+=== 2009-04-26 | 1.0.0 ===
+
+ * converted the plugin to 1.1
