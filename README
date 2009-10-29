@@ -1,10 +1,16 @@
 = sfErrorNotifierPlugin plugin =
 
-The `sfErrorNotifierPlugin` sends email notifications when application errors (exceptions) occur.
+The `sfErrorNotifierPlugin` sends automatically email notifications when application errors (exceptions) occur.
 
 Its easy configuration allows you to set which environments to enable for the notifications.
 
-The details about the thrown exceptions are sent via email.
+The details about the thrown exceptions and other useful parameteers are sent via email.
+
+NEW! It is also possible to trigger notifications explicitly by using this line anywhere in your code (the email will be sent only from the environments enabled for the notifications):
+
+    {{{
+      sfErrorNotifier::alert('Message To Send With The Alert')   
+    }}}
 
 == Installation ==
 
@@ -14,7 +20,8 @@ The details about the thrown exceptions are sent via email.
       symfony plugin:install sfErrorNotifierPlugin
     }}}
 
-  * In the file /plugins/sfErrorNotifierPlugin/config/app.yml,  set the email address(es) to deliver the notifications to, for the environments you want to enable (tipically only 'prod')
+  * In the file /plugins/sfErrorNotifierPlugin/config/app.yml,  set the email address(es) to deliver the notifications to, for the environments you want to enable (tipically only 'prod').
+You can comma-separate multiple recipients.
 
     {{{
       prod:
@@ -22,25 +29,33 @@ The details about the thrown exceptions are sent via email.
           email:      errors@mysite.com
     }}}
 
+In this configuration file, you can also set the format of the email (html or txt) and, optionally, the From: field for the email.
+
   * Clear the cache
 
     {{{
       symfony cc
     }}}
 
-  * Some members told me they needed to override the default error page in order to get this plugin to work. You shouldn't need that, but just in case the plugin doesn't work, try to do it. The way to set a custom error page is explained in the Symfony books.
+  * Some users have mentioned they needed to override the default error page in order to get this plugin to work. You shouldn't need that, but just in case the plugin doesn't work, try to do it. The way to set a custom error page is explained in the Symfony books.
 
   * You're done.
 
 == Changelog ==
 
+=== 2009-10-28 | 1.1 ===
+* Added nice HTML format for the email (thanks to Gustavo Garcia)
+* Added user information to the email (thanks to Gustavo Garcia)
+* Added the possibility to also trigger the notification email
+explicitly via a standard method call 
+
 === 2009-04-30 | 1.0.2 ===
-*Improved the documentation
-*Made the email subject more explanatory
+* Improved the documentation
+* Made the email subject more explanatory
 
 === 2009-04-27 | 1.0.1 ===
-*Improved the documentation
+* Improved the documentation
 
 === 2009-04-26 | 1.0.0 ===
 
- * converted the plugin to 1.1
+* converted the plugin to 1.1
