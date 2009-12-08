@@ -1,4 +1,4 @@
-<?
+<?php
 
 /*
  * (c) 2009 Gustavo Garcia
