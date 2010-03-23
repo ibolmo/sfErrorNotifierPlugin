@@ -43,6 +43,10 @@ In this configuration file, you can also set the format of the email (html or tx
 
 == Changelog ==
 
+=== 2010-03-23 | 1.2 ===
+* Fixed a bug in the documentation
+* Made the code a bit more robust
+
 === 2009-10-28 | 1.1 ===
 * Added nice HTML format for the email (thanks to Gustavo Garcia)
 * Added user information to the email (thanks to Gustavo Garcia)
