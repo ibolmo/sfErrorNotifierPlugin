@@ -125,13 +125,19 @@ class sfErrorNotifierMail{
     $this->beginTable();
     	$user = $this->context->getUser();
     	$subtable = array();
-    	foreach ($user->getAttributeHolder()->getAll() as $key => $value){
-	if (is_array($value))
+
+	if (is_object($user))
 	{
-		$value = 'Array: ' . implode(', ',  $value);
+    		foreach ($user->getAttributeHolder()->getAll() as $key => $value)
+		{
+			if (is_array($value))
+			{
+				$value = 'Array: ' . implode(', ',  $value);
+			}
+    	  		$subtable[] = '<b>'.$key.'</b>: '.$value;
+    		}
 	}
-    	  $subtable[] = '<b>'.$key.'</b>: '.$value;
-    	}
+
     	$subtable = implode('<br/>',$subtable);
     
     	$this->addRow('Attributes',$subtable);
