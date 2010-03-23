@@ -10,11 +10,11 @@
   <email>danieleocchipinti.it@gmail.com</email>
   <active>yes</active>
  </lead>
- <date>2009-04-30</date>
+ <date>2010-03-23</date>
  <time>13:20:23</time>
  <version>
-  <release>1.0.4</release>
-  <api>1.0.4</api>
+  <release>1.2.0</release>
+  <api>1.2.0</api>
  </version>
  <stability>
   <release>stable</release>
@@ -27,8 +27,8 @@
    <file md5sum="fe6c8905ee6f0abe8917eb45ae7b928f" name="config/app.yml" role="data"/>
    <file md5sum="54bed82dce3d89dc80a91191019aed87" name="config/config.php" role="data"/>
    <file md5sum="55efce2a530fb37be2788434a98ce149" name="lib/sfErrorNotifier.php" role="data"/>
-   <file md5sum="01bbdd76ae450e10c7751a117c67c3e5" name="lib/sfErrorNotifierMail.php" role="data" />
-   <file md5sum="7ce173ba7d35e9c30aa46f3539016175" name="README" role="data"/>
+   <file md5sum="6a838a995cef376aa8d76b0e1b8ee9ae" name="lib/sfErrorNotifierMail.php" role="data" />
+   <file md5sum="b0ff58d2315e8e51e7fb2cd5e2f04432" name="README" role="data"/>
    <file md5sum="720af3ce0a0fdd75e8231d599250f36a" name="LICENSE" role="data"/>
   </dir>
  </contents>
