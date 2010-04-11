@@ -128,25 +128,32 @@ class sfErrorNotifierMail{
 
 	if (is_object($user))
 	{
-    		foreach ($user->getAttributeHolder()->getAll() as $key => $value)
-		{
-			if (is_array($value))
-			{
-				$value = 'Array: ' . implode(', ',  $value);
-			}
-    	  		$subtable[] = '<b>'.$key.'</b>: '.$value;
-    		}
-	}
+      foreach ($user->getAttributeHolder()->getAll() as $key => $value)
+      {
+        if (is_array($value))
+        {
+          $value = 'Array: ' . implode(', ',  $value);
+        }
+        elseif(is_object($value))
+        {
+          if(!method_exists($value, "__toString"))
+          {
+            $value = "Object: ".get_class($value);
+          }
+        }
+        $subtable[] = '<b>'.$key.'</b>: '.$value;
+      }
+    }
 
-    	$subtable = implode('<br/>',$subtable);
-    
-    	$this->addRow('Attributes',$subtable);
-    	$this->addRow('Credentials',implode(', ',$user->listCredentials()));
+    $subtable = implode('<br/>',$subtable);
+
+    $this->addRow('Attributes',$subtable);
+    $this->addRow('Credentials',implode(', ',$user->listCredentials()));
     $this->body .= '</table>';
-    
-    	
+
+
     $this->body .= '</div>';
-    
+
     @mail($this->to, $this->subject, $this->body, $this->headers);
 
     return true;
