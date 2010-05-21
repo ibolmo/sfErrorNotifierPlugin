@@ -17,29 +17,35 @@ class sfErrorNotifier
 {
   static public function notify(sfEvent $event)
   {
+    return self::notifyException($event->getSubject());
+  }
+  
+  static public function notifyException($exception)
+  {
+    // it's not an error.
+    if ($exception instanceof sfStopException) {
+      return;
+    } 
     
     $to = sfConfig::get('app_sfErrorNotifier_emailTo');
-    if(! $to)
-    {
+    if(! $to) {
       // this environment is not set to notify exceptions
       return; 
     }
-	
-    $exception = $event->getSubject();
+    
     $context = sfContext::getInstance();
-	$env = 'n/a';
-    if ($conf = sfContext::getInstance()->getConfiguration())
-    {
+    $env = 'n/a';
+    if ($conf = sfContext::getInstance()->getConfiguration()) {
       $env = $conf->getEnvironment(); 
     }
-
+    
     $data = array();      
     $data['className'] = get_class($exception);
     $data['message'] = !is_null($exception->getMessage()) ? $exception->getMessage() : 'n/a';
     $data['moduleName'] = $context->getModuleName();
     $data['actionName'] = $context->getActionName();
     $data['uri'] = $context->getRequest()->getUri();
-	
+  
     $subject = "ERROR: {$_SERVER['HTTP_HOST']} Exception - $env - {$data['message']}";
     
     $mail = new sfErrorNotifierMail($subject, $data, $exception, $context);
