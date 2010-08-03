@@ -14,16 +14,25 @@
  */
 class sfErrorNotifierErrorHandler
 {
+  private static $tmpBuffer = null;
+
   /**
    * @see handlePhpError
    */
 	public static function start()
 	{
+             $reportFatalErrors = sfConfig::get('app_sfErrorNotifier_reportFatalErrors');
+
+             if (!$reportFatalErrors)
+             {
+                 return;
+             }
+
 		set_error_handler(array(__CLASS__,'handlePhpError'), E_ALL);
 		set_exception_handler(array(__CLASS__,'handleException'));
 		register_shutdown_function(array(__CLASS__, 'handlePhpFatalError'));
 		
-    self::_reserveMemory();
+            self::_reserveMemory();
 	}
 
 	/**
@@ -65,15 +74,15 @@ class sfErrorNotifierErrorHandler
   }
 	
 	/**
-	 * This is allows to catch memory limit fatal errors.
+	 * This allows to catch memory limit fatal errors.
 	 */
 	protected static function _reserveMemory()
 	{
-	  $GLOBALS['tmp_buf'] = str_repeat('x', 1024 * 500);
+	  self::$tmpBuffer = str_repeat('x', 1024 * 500);
 	}
 	
 	protected static function _freeMemory()
 	{
-	  unset($GLOBALS['tmp_buf']);
+	  self::$tmpBuffer = '';
 	}
 }

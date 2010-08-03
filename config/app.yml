@@ -4,4 +4,18 @@ prod:
     emailFrom:       # Optional, e.g.: My Site <no-reply@mysite.com> 
     emailFormat: html   # 'html' or 'txt', html by default 
 
+    reportFatalErrors: false
+
+    mailerMethod:                # Optional, for advanced users. Specify an alternative mail method
+                                 # rather than the default PHP mail function.
+                                 # It can be the name of a static method (i.e. MyMailer::send)
+                                 # or the name of a function (i.e. emailer)
+                                 # The paramater that would be passed is an associative array with these keys:
+                                 # _ recipient
+                                 # _ subject
+                                 # _ body
+                                 # _ headers
+                                 #
+                                 # You can even use this method to send notifications to a database
+                                 # rather than via email.
  

@@ -148,13 +148,14 @@ class sfErrorNotifierMail{
     $subtable = implode('<br/>',$subtable);
 
     $this->addRow('Attributes',$subtable);
-    $this->addRow('Credentials',implode(', ',$user->listCredentials()));
+    $userCredentials = method_exists($user, 'listCredentials') ? $user->listCredentials() : $user->getCredentials();
+    $this->addRow('Credentials',implode(', ', $userCredentials));
     $this->body .= '</table>';
 
 
     $this->body .= '</div>';
 
-    @mail($this->to, $this->subject, $this->body, $this->headers);
+    $this->mailer($this->to, $this->subject, $this->body, $this->headers);
 
     return true;
   }
@@ -202,13 +203,32 @@ class sfErrorNotifierMail{
 	$this->body .= "\n\n";
 	
     $this->body .= "User Credentials:\n";
-    $this->body .= implode(', ' , $user->listCredentials());	
+    $userCredentials = method_exists($user, 'listCredentials') ? $user->listCredentials() : $user->getCredentials();
+    $this->body .= implode(', ' , $userCredentials);
     $this->body .= "\n\n";
     
-    @mail($this->to, $this->subject, $this->body, $this->headers);
+    $this->mailer($this->to, $this->subject, $this->body, $this->headers);
 
     return true;
   }
 
+  private function mailer($to, $subject, $body, $headers)
+  {
+    $alternativeMailer = sfConfig::get('app_sfErrorNotifier_mailerMethod');
+
+    if (strlen($alternativeMailer))
+    {
+        $params = array('recipient' => $to,
+                        'subject' => $subject,
+                        'body' => $body,
+                        'headers' => $headers);
+        $func = strpos($alternativeMailer, '::') === false ?  $alternativeMailer : explode('::', $alternativeMailer) ;
+        call_user_func($func, $params);
+    }
+    else
+    {
+        @mail($to, $subject, $body, $headers);
+    }
+  }
 }
 

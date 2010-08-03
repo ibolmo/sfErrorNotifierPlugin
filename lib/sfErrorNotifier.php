@@ -42,6 +42,7 @@ class sfErrorNotifier
     $data = array();      
     $data['className'] = get_class($exception);
     $data['message'] = !is_null($exception->getMessage()) ? $exception->getMessage() : 'n/a';
+    $data['appName'] = $context->getConfiguration()->getApplication();
     $data['moduleName'] = $context->getModuleName();
     $data['actionName'] = $context->getActionName();
     $data['uri'] = $context->getRequest()->getUri();
