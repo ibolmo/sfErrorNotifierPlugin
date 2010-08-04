@@ -46,6 +46,7 @@ class sfErrorNotifier
     $data['moduleName'] = $context->getModuleName();
     $data['actionName'] = $context->getActionName();
     $data['uri'] = $context->getRequest()->getUri();
+    $data['serverData'] =  self::getRequestHeaders();
   
     $subject = "ERROR: {$_SERVER['HTTP_HOST']} Exception - $env - {$data['message']}";
     
@@ -79,5 +80,18 @@ class sfErrorNotifier
     $mail = new sfErrorNotifierMail($subject, $data, null, $context);
 
     $mail->notify(sfConfig::get('app_sfErrorNotifier_emailFormat', 'html'));
+  }
+
+  static private function getRequestHeaders()
+  {
+      $ret = '';
+
+      $newLine = (sfConfig::get('app_sfErrorNotifier_emailFormat') == 'html') ?  '<br />' : '\r\n';
+
+      foreach ($_SERVER as $key => $value)
+      {
+          $ret .= "$key: $value $newLine";
+      }
+      return $ret;
   }
 }
