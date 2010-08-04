@@ -128,28 +128,28 @@ class sfErrorNotifierMail{
 
 	if (is_object($user))
 	{
-      foreach ($user->getAttributeHolder()->getAll() as $key => $value)
-      {
-        if (is_array($value))
-        {
-          $value = 'Array: ' . implode(', ',  $value);
-        }
-        elseif(is_object($value))
-        {
-          if(!method_exists($value, "__toString"))
+          foreach ($user->getAttributeHolder()->getAll() as $key => $value)
           {
-            $value = "Object: ".get_class($value);
+            if (is_array($value))
+            {
+              $value = 'Array: ' . implode(', ',  $value);
+            }
+            elseif(is_object($value))
+            {
+              if(!method_exists($value, "__toString"))
+              {
+                $value = "Object: ".get_class($value);
+              }
+            }
+            $subtable[] = '<b>'.$key.'</b>: '.$value;
           }
+
+            $subtable = implode('<br/>',$subtable);
+
+            $this->addRow('Attributes',$subtable);
+            $userCredentials = method_exists($user, 'listCredentials') ? $user->listCredentials() : $user->getCredentials();
+            $this->addRow('Credentials',implode(', ', $userCredentials));
         }
-        $subtable[] = '<b>'.$key.'</b>: '.$value;
-      }
-    }
-
-    $subtable = implode('<br/>',$subtable);
-
-    $this->addRow('Attributes',$subtable);
-    $userCredentials = method_exists($user, 'listCredentials') ? $user->listCredentials() : $user->getCredentials();
-    $this->addRow('Credentials',implode(', ', $userCredentials));
     $this->body .= '</table>';
 
 
@@ -193,18 +193,22 @@ class sfErrorNotifierMail{
     
     $this->body .= "User Attributes:\n";
     $user = $this->context->getUser();
-    foreach ($user->getAttributeHolder()->getAll() as $key => $value){
-      if (is_array($value))
-      {
-        $value = 'Array: ' . implode(', ',  $value);
-      }
-      $this->body .= $key . ': ' . $value . "\n";
+
+    if (is_object($user))
+    {
+        foreach ($user->getAttributeHolder()->getAll() as $key => $value){
+          if (is_array($value))
+          {
+            $value = 'Array: ' . implode(', ',  $value);
+          }
+          $this->body .= $key . ': ' . $value . "\n";
+        }
+            $this->body .= "\n\n";
+
+        $this->body .= "User Credentials:\n";
+        $userCredentials = method_exists($user, 'listCredentials') ? $user->listCredentials() : $user->getCredentials();
+        $this->body .= implode(', ' , $userCredentials);
     }
-	$this->body .= "\n\n";
-	
-    $this->body .= "User Credentials:\n";
-    $userCredentials = method_exists($user, 'listCredentials') ? $user->listCredentials() : $user->getCredentials();
-    $this->body .= implode(', ' , $userCredentials);
     $this->body .= "\n\n";
     
     $this->mailer($this->to, $this->subject, $this->body, $this->headers);
