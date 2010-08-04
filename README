@@ -37,6 +37,8 @@ In this configuration file, you can also set the format of the email (html or tx
       symfony cc
     }}}
 
+  * Should you have any problem running the previous command, just delete the files in the cache directory manually
+
   * Some users have mentioned they needed to override the default error page in order to get this plugin to work. You shouldn't need that, but just in case the plugin doesn't work, try to do it. The way to set a custom error page is explained in the Symfony books.
 
   * You're done.
