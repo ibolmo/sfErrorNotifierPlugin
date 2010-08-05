@@ -12,6 +12,10 @@ NEW! It is also possible to trigger notifications explicitly by using this line 
       sfErrorNotifier::alert('Message To Send With The Alert')   
     }}}
 
+NEW! You can specify a mailer function (or method) to use rather than the native PHP mail method
+
+NEW! It work on Symfony 1.2, 1.3 and 1.4
+
 == Installation ==
 
   * Install the plugin
@@ -44,6 +48,16 @@ In this configuration file, you can also set the format of the email (html or tx
   * You're done.
 
 == Changelog ==
+
+=== 2010-08-05 | 1.5 ===
+* works with Symfony 1.4 (thanks to luctus)
+* it should alert also for PHP fatal errors (such as memory exausted) (thanks to maksim_ka)
+* fixed a bug: under certain conditions, the $user variable wasn't an object and that was triggering a Fatal Error
+* you can specify a mailer function (or method) to use rather than the native PHP mail method
+* the notification now also contains some further details for the request
+* the notification now also contains the name of the application
+* tested on Symfony 1.2, 1.3 and 1.4
+
 
 === 2010-03-23 | 1.2 ===
 * Fixed a bug in the documentation
