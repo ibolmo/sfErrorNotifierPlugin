@@ -21,16 +21,16 @@ class sfErrorNotifierErrorHandler
    */
 	public static function start()
 	{
-             $reportFatalErrors = sfConfig::get('app_sfErrorNotifier_reportFatalErrors');
+             $reportAll = sfConfig::get('app_sfErrorNotifier_reportAll');
 
-             if (!$reportFatalErrors)
+             if (!$reportAll)
              {
                  return;
              }
 
 		set_error_handler(array(__CLASS__,'handlePhpError'), E_ALL);
 		set_exception_handler(array(__CLASS__,'handleException'));
-		register_shutdown_function(array(__CLASS__, 'handlePhpFatalError'));
+		register_shutdown_function(array(__CLASS__, 'handlePhpFatalErrorAndWarnings'));
 		
             self::_reserveMemory();
 	}
@@ -48,9 +48,11 @@ class sfErrorNotifierErrorHandler
 	{
 	  sfErrorNotifier::notifyException(
 	   new ErrorException($errstr, 0, $errno, $errfile, $errline));
+
+          return false; // in order not to bypass the standard PHP error handler
 	} 
 	
-	public static function handlePhpFatalError()
+	public static function handlePhpFatalErrorAndWarnings()
 	{ 
     $lastError = error_get_last();
     if (is_null($lastError)) return;
