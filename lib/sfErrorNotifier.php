@@ -48,7 +48,8 @@ class sfErrorNotifier
     $data['uri'] = $context->getRequest()->getUri();
     $data['serverData'] =  self::getRequestHeaders();
   
-    $subject = "ERROR: {$_SERVER['HTTP_HOST']} Exception - $env - {$data['message']}";
+    $serverHttpHost = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'unknown http host';
+    $subject = "ERROR: $serverHttpHost Exception - $env - {$data['message']}";
     
     $mail = new sfErrorNotifierMail($subject, $data, $exception, $context);
     $mail->notify(sfConfig::get('app_sfErrorNotifier_emailFormat', 'html'));
@@ -75,7 +76,8 @@ class sfErrorNotifier
     $data['actionName'] = $context->getActionName();
     $data['uri'] = $context->getRequest()->getUri();
 	
-    $subject = "ALERT: {$_SERVER['HTTP_HOST']} - $env - $alertMessage";
+    $serverHttpHost = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'unknown http host';
+    $subject = "ALERT: $serverHttpHost - $env - $alertMessage";
     
     $mail = new sfErrorNotifierMail($subject, $data, null, $context);
 
