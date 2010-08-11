@@ -21,60 +21,78 @@ class sfErrorNotifierErrorHandler
    */
 	public static function start()
 	{
-             $reportAll = sfConfig::get('app_sfErrorNotifier_reportAll');
+             $reportPHPErrors = sfConfig::get('app_sfErrorNotifier_reportPHPErrors');
+             $reportPHPWarnings = sfConfig::get('app_sfErrorNotifier_reportPHPWarnings');
 
-             if (!$reportAll)
+             if ($reportPHPErrors)
              {
-                 return;
-             }
-
 		set_error_handler(array(__CLASS__,'handlePhpError'), E_ALL);
 		set_exception_handler(array(__CLASS__,'handleException'));
-		register_shutdown_function(array(__CLASS__, 'handlePhpFatalErrorAndWarnings'));
-		
-            self::_reserveMemory();
+             }
+
+             if ($reportPHPErrors || $reportPHPWarnings)
+             {
+                // From PHP Documentation: the following error types cannot be handled with
+                // a user defined function using set_error_handler: *E_ERROR*, *E_PARSE*, *E_CORE_ERROR*, *E_CORE_WARNING*,
+                // *E_COMPILE_ERROR*, *E_COMPILE_WARNING*
+                // That is we need to use also register_shutdown_function()
+                register_shutdown_function(array(__CLASS__, 'handlePhpFatalErrorAndWarnings'));
+             }
+
+             self::_reserveMemory();
 	}
 
 	/**
-	 * 
+	 *
 	 * @param unknown_type $errno
 	 * @param unknown_type $errstr
 	 * @param unknown_type $errfile
 	 * @param unknown_type $errline
-	 * 
+	 *
 	 * @throws ErrorException
 	 */
 	public static function handlePhpError($errno, $errstr, $errfile, $errline)
 	{
-	  sfErrorNotifier::notifyException(
-	   new ErrorException($errstr, 0, $errno, $errfile, $errline));
+            sfErrorNotifier::notifyException(
+            new ErrorException($errstr, 0, $errno, $errfile, $errline));
 
-          return false; // in order not to bypass the standard PHP error handler
-	} 
-	
-	public static function handlePhpFatalErrorAndWarnings()
-	{ 
-    $lastError = error_get_last();
-    if (is_null($lastError)) return;
-    
-    self::_freeMemory();
-    
-    $errors = array(
-      E_ERROR, E_PARSE, E_CORE_ERROR, E_CORE_WARNING, 
-      E_COMPILE_ERROR, E_COMPILE_WARNING, E_STRICT);
-
-    if (in_array($lastError['type'], $errors)) {
-       sfErrorNotifier::notifyException(new ErrorException(
-         @$lastError['message'], @$lastError['type'], @$lastError['type'], 
-         @$lastError['file'], @$lastError['line']));
-    }
+            return false; // in order not to bypass the standard PHP error handler
 	}
-	
-  public static function handleException($e)
-  {
-    sfErrorNotifier::notifyException($e);
-  }
-	
+
+	public static function handlePhpFatalErrorAndWarnings()
+	{
+            self::_freeMemory();
+
+            $lastError = error_get_last();
+            if (is_null($lastError)) return;
+
+            $reportPHPErrors = sfConfig::get('app_sfErrorNotifier_reportPHPErrors');
+            $reportPHPWarnings = sfConfig::get('app_sfErrorNotifier_reportPHPWarnings');
+
+            $errors = array();
+
+             if ($reportPHPErrors)
+             {
+                $errors = array_merge($errors, array(E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR));
+             }
+
+             if ($reportPHPWarnings)
+             {
+                $errors = array_merge($errors, array( E_CORE_WARNING, E_COMPILE_WARNING, E_STRICT));
+             }
+
+            if (in_array($lastError['type'], $errors)) {
+               sfErrorNotifier::notifyException(new ErrorException(
+                 @$lastError['message'], @$lastError['type'], @$lastError['type'],
+                 @$lastError['file'], @$lastError['line']));
+            }
+	}
+
+        public static function handleException($e)
+        {
+            sfErrorNotifier::notifyException($e);
+        }
+
 	/**
 	 * This allows to catch memory limit fatal errors.
 	 */
@@ -82,7 +100,7 @@ class sfErrorNotifierErrorHandler
 	{
 	  self::$tmpBuffer = str_repeat('x', 1024 * 500);
 	}
-	
+
 	protected static function _freeMemory()
 	{
 	  self::$tmpBuffer = '';

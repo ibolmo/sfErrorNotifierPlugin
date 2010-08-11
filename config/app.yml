@@ -4,9 +4,11 @@ prod:
     emailFrom:       # Optional, e.g.: My Site <no-reply@mysite.com> 
     emailFormat: html   # 'html' or 'txt', html by default 
 
-    reportAll: false             # This will let you be notified not only of
-                                 # Symfony exceptions, but also PHP warnings and
-                                 # PHP fatal errors.
+    reportPHPErrors: false        # This will let you be notified not only of
+                                 # Symfony exceptions, but also PHP errors.
+
+    reportPHPWarnings: false     # This will let you be notified not only of
+                                 # Symfony exceptions, but also PHP warnings.
                                  #
                                  # Turning this options on, you will probably receive
                                  # a lot of emails but it is a good way of spot problems.
