@@ -26,12 +26,15 @@ class sfErrorNotifierErrorHandler
 
              if ($reportPHPErrors)
              {
-		set_error_handler(array(__CLASS__,'handlePhpError'), E_ALL);
 		set_exception_handler(array(__CLASS__,'handleException'));
              }
 
              if ($reportPHPErrors || $reportPHPWarnings)
              {
+                // set_error_handler and register_shutdown_function can be triggered on
+                // both warnings and errors
+
+		set_error_handler(array(__CLASS__,'handlePhpError'), E_ALL);
                 // From PHP Documentation: the following error types cannot be handled with
                 // a user defined function using set_error_handler: *E_ERROR*, *E_PARSE*, *E_CORE_ERROR*, *E_CORE_WARNING*,
                 // *E_COMPILE_ERROR*, *E_COMPILE_WARNING*
@@ -53,6 +56,27 @@ class sfErrorNotifierErrorHandler
 	 */
 	public static function handlePhpError($errno, $errstr, $errfile, $errline)
 	{
+            $reportPHPWarnings = sfConfig::get('app_sfErrorNotifier_reportPHPWarnings');
+
+            // there would be more warning codes but they are not caught by set_error_handler
+            // but by register_shutdown_function
+            $warningsCodes = array(E_NOTICE, E_USER_WARNING, E_USER_NOTICE, E_STRICT);
+
+            // E_DEPRECATED, E_USER_DEPRECATED have been introduced in PHP 5.3
+            if (defined('E_DEPRECATED'))
+            {
+                $warningsCodes[] = E_DEPRECATED;
+            }
+            if (defined('E_USER_DEPRECATED'))
+            {
+                $warningsCodes[] = E_USER_DEPRECATED;
+            }
+
+            if(!$reportPHPWarnings && in_array($errno, $warningsCodes))
+            {
+                return false;
+            }
+
             sfErrorNotifier::notifyException(
             new ErrorException($errstr, 0, $errno, $errfile, $errline));
 
