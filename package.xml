@@ -10,11 +10,11 @@
   <email>danieleocchipinti.it@gmail.com</email>
   <active>yes</active>
  </lead>
- <date>2010-08-05</date>
+ <date>2010-10-13</date>
  <time>14:20:23</time>
  <version>
-  <release>1.5.4</release>
-  <api>1.5.4</api>
+  <release>1.6.0</release>
+  <api>1.6.0</api>
  </version>
  <stability>
   <release>stable</release>
@@ -25,11 +25,11 @@
  <contents>
   <dir name="/">
    <file md5sum="93cc56219964cda31d858dc82d73ae06" name="config/app.yml" role="data"/>
-   <file md5sum="2fccec77debd08f99ab6d9db18dc5e9d" name="config/sfErrorNotifierPluginConfiguration.class.php" role="data"/>
+   <file md5sum="e245a2e8db8e8cf40d5c8d8aafaa3ded" name="config/sfErrorNotifierPluginConfiguration.class.php" role="data"/>
    <file md5sum="4d35105f076caeefb355065ac0a5a7fb" name="lib/sfErrorNotifier.php" role="data"/>
    <file md5sum="f9504a0ab2ff6264d3979cd4b2918a1a" name="lib/sfErrorNotifierMail.php" role="data" />
-   <file md5sum="1a0684d8ddcad4822636c208211c6ffd" name="lib/sfErrorNotifierErrorHandler.php" role="data" />
-   <file md5sum="c4575179995583f90a7711c2679a9170" name="README" role="data"/>
+   <file md5sum="09d6e2751ec7f7f203db88d03954c220" name="lib/sfErrorNotifierErrorHandler.php" role="data" />
+   <file md5sum="dd6848244cdf11ba036aa5baca544d8a" name="README" role="data"/>
    <file md5sum="720af3ce0a0fdd75e8231d599250f36a" name="LICENSE" role="data"/>
   </dir>
  </contents>
