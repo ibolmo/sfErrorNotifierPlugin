@@ -1,5 +1,6 @@
-prod:
+all:
   sfErrorNotifier:
+    enabled:    true  # Global enable or disable per env
     emailTo:      error@mysite.com  # EDIT THIS
     emailFrom:       # Optional, e.g.: My Site <no-reply@mysite.com> 
     emailFormat: html   # 'html' or 'txt', html by default 
@@ -13,6 +14,7 @@ prod:
                                  # Turning this options on, you will probably receive
                                  # a lot of emails but it is a good way of spot problems.
 
+    report404:    false   # Also report 404 errors
 
     mailerMethod:                # Optional, for advanced users. Specify an alternative mail method
                                  # rather than the default PHP mail function.

@@ -17,7 +17,23 @@ class sfErrorNotifier
 {
   static public function notify(sfEvent $event)
   {
-    return self::notifyException($event->getSubject());
+    $e = $event->getSubject();
+    if ( $e instanceof Exception )
+        return self::notifyException($e);
+    return ;
+  }
+  
+  static public function notify404(sfEvent $event)
+  {
+    $e = $event->getSubject();
+    if ( $e instanceof Exception )
+        return self::notifyException($e);
+    else {
+        $uri = sfContext::getInstance()->getRequest()->getUri();
+        return self::notifyException(
+            new sfError404Exception( "Page not found [404][uri: $uri]")
+        );
+    }
   }
   
   static public function notifyException($exception)

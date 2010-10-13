@@ -35,6 +35,15 @@ You can comma-separate multiple recipients.
 
 In this configuration file, you can also set the format of the email (html or txt) and, optionally, the From: field for the email.
 
+  * Enable the plugin
+    {{{
+      prod:
+        sfErrorNotifier:
+	  enabled: true
+          emailTo:      errors@mysite.com
+    }}}
+
+
   * Clear the cache
 
     {{{
@@ -48,6 +57,11 @@ In this configuration file, you can also set the format of the email (html or tx
   * You're done.
 
 == Changelog ==
+
+=== 2010-10-13 | 1.6 ===
+* In the configuration, we have added a key ('enabled') that you need to set (we wanted to enable the plugin in a more standard way)
+* New option report404 to specifically target 404 errors
+* fixed a bug: when page_not_found event was fired a PHP error was fired
 
 === 2010-08-05 | 1.5 ===
 * works with Symfony 1.4 (thanks to luctus)
