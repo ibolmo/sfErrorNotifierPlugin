@@ -26,11 +26,11 @@ Update your application(s) `app.yml`. For example:
 
 	# apps/frontend/config/app.yml
 	all:
-		sf_error_notifier_plugin:
-			email_to: email@domain.tld
+	  sf_error_notifier_plugin:
+	    email_to: email@domain.tld
 	dev:
-		sf_error_notifier_plugin:
-			enabled: false
+	  sf_error_notifier_plugin:
+	    enabled: false
 			
 Modify Email Template
 ---------------------
