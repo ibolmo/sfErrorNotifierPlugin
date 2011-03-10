@@ -15,101 +15,66 @@
  */
 class sfErrorNotifier
 {
-  static public function notify(sfEvent $event)
-  {
-    $e = $event->getSubject();
-    if ( $e instanceof Exception )
-        return self::notifyException($e);
-    return ;
-  }
-  
-  static public function notify404(sfEvent $event)
-  {
-    $e = $event->getSubject();
-    if ( $e instanceof Exception )
-        return self::notifyException($e);
-    else {
-        $uri = sfContext::getInstance()->getRequest()->getUri();
-        return self::notifyException(
-            new sfError404Exception( "Page not found [404][uri: $uri]")
-        );
-    }
-  }
-  
-  static public function notifyException($exception)
-  {
-    // it's not an error.
-    if ($exception instanceof sfStopException) {
-      return;
-    } 
-    
-    $to = sfConfig::get('app_sfErrorNotifier_emailTo');
-    if(! $to) {
-      // this environment is not set to notify exceptions
-      return; 
-    }
-    
-    $context = sfContext::getInstance();
-    $env = 'n/a';
-    if ($conf = sfContext::getInstance()->getConfiguration()) {
-      $env = $conf->getEnvironment(); 
-    }
-    
-    $data = array();      
-    $data['className'] = get_class($exception);
-    $data['message'] = !is_null($exception->getMessage()) ? $exception->getMessage() : 'n/a';
-    $data['appName'] = $context->getConfiguration()->getApplication();
-    $data['moduleName'] = $context->getModuleName();
-    $data['actionName'] = $context->getActionName();
-    $data['uri'] = $context->getRequest()->getUri();
-    $data['serverData'] =  self::getRequestHeaders();
-  
-    $serverHttpHost = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'unknown http host';
-    $subject = "ERROR: $serverHttpHost Exception - $env - {$data['message']}";
-    
-    $mail = new sfErrorNotifierMail($subject, $data, $exception, $context);
-    $mail->notify(sfConfig::get('app_sfErrorNotifier_emailFormat', 'html'));
-  }
-
-  static public function alert($alertMessage)
-  {
-    $to = sfConfig::get('app_sfErrorNotifier_emailTo');
-    if(! $to)
-    {
-      // this environment is not set to notify exceptions
-      return; 
-    }
+	static function notify(sfEvent $event)
+	{
+		$e = $event->getSubject();
+		return ($e instanceof Exception) ? self::notifyException($e) : null;
+	}
 	
-    $context = sfContext::getInstance();
-	  $env = 'n/a';
-    if ($conf = sfContext::getInstance()->getConfiguration())
-    {
-      $env = $conf->getEnvironment(); 
-    }
-
-    $data = array();
-    $data['moduleName'] = $context->getModuleName();
-    $data['actionName'] = $context->getActionName();
-    $data['uri'] = $context->getRequest()->getUri();
+	static function notify404(sfEvent $event)
+	{
+		$e = $event->getSubject();
+		if (!($e instanceof Exception)){
+			$uri = sfContext::getInstance()->getRequest()->getUri();
+			$e = new sfError404Exception("Page not found [404][uri: $uri]");
+		}
+		return self::notifyException($e);
+	}
 	
-    $serverHttpHost = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'unknown http host';
-    $subject = "ALERT: $serverHttpHost - $env - $alertMessage";
-    
-    $mail = new sfErrorNotifierMail($subject, $data, null, $context);
+	static function notifyException($exception)
+	{
+		if ($exception instanceof sfStopException) return;
+		if (!$to = sfConfig::get('app_sf_error_notifier_plugin_email_to')) return; 
+		
+		$sf_root_dir = sfConfig::get('sf_root_dir');
+		self::alert($exception->getMessage(), 'Exception', array(
+			'className' => get_class($exception),
+			'sf_root_dir' => $sf_root_dir,
+			'trace' => str_replace($sf_root_dir, '.', $exception->getTraceAsString())
+		));
+	}
+	
+	static function alert($message, $type = 'Alert', $data = array())
+	{
+		if (!$to = sfConfig::get('app_sf_error_notifier_plugin_email_to')) return; 
+		
+		$context = sfContext::getInstance();
+		$configuration = $context->getConfiguration();
+		
+		$data = array_merge(array(
+			'type' => $type,
+			'message' => $message,
+			'appName' => $configuration->getApplication(),
+			'moduleName' => $context->getModuleName(),
+			'actionName' => $context->getActionName(),
+			'uri' => $context->getRequest()->getUri(),
+			'host' => $_SERVER['HTTP_HOST'],
+			'environment' => $configuration->getEnvironment()
+		), $data);
+		
+		$placeholders = array_map(function($key){ return "%$key%"; }, array_keys($data));
+		
+		$subject = strtr(sfConfig::get('app_sf_error_notifier_plugin_email_subject'), array_combine($placeholders, array_values($data))); 
+		
+    $configuration->loadHelpers('Partial');
+		$body = get_partial('sfErrorNotifier/notify', array('data' => $data, 'user' => $context->getUser()));
+		
+		$message = Swift_Message::newInstance()
+			->setFrom(sfConfig::get('app_sf_error_notifier_plugin_email_from'))
+			->setTo($to)
+			->setSubject($subject)
+			->setBody($body, sfConfig::get('app_sf_error_notifier_plugin_email_format'));
 
-    $mail->notify(sfConfig::get('app_sfErrorNotifier_emailFormat', 'html'));
-  }
-
-  static private function getRequestHeaders()
-  {
-      $ret = '';
-
-      $newLine = (sfConfig::get('app_sfErrorNotifier_emailFormat') == 'html') ?  '<br />' : '\r\n';
-
-      foreach ($_SERVER as $key => $value)
-      {
-          $ret .= "$key: $value $newLine";
-      }
-      return $ret;
-  }
+		$context->getMailer()->send($message);
+	}
 }

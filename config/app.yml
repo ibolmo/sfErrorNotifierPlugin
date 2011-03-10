@@ -1,31 +1,10 @@
-all:
-  sfErrorNotifier:
-    enabled:    true  # Global enable or disable per env
-    emailTo:      error@mysite.com  # EDIT THIS
-    emailFrom:       # Optional, e.g.: My Site <no-reply@mysite.com> 
-    emailFormat: html   # 'html' or 'txt', html by default 
-
-    reportPHPErrors: false        # This will let you be notified not only of
-                                 # Symfony exceptions, but also PHP errors.
-
-    reportPHPWarnings: false     # This will let you be notified not only of
-                                 # Symfony exceptions, but also PHP warnings.
-                                 #
-                                 # Turning this options on, you will probably receive
-                                 # a lot of emails but it is a good way of spot problems.
-
-    report404:    false   # Also report 404 errors
-
-    mailerMethod:                # Optional, for advanced users. Specify an alternative mail method
-                                 # rather than the default PHP mail function.
-                                 # It can be the name of a static method (i.e. MyMailer::send)
-                                 # or the name of a function (i.e. emailer)
-                                 # The paramater that would be passed is an associative array with these keys:
-                                 # _ recipient
-                                 # _ subject
-                                 # _ body
-                                 # _ headers
-                                 #
-                                 # You can even use this method to send notifications to a database
-                                 # rather than via email.
- 
+default:
+  sf_error_notifier_plugin:
+    enabled:         true                                          # Global enable or disable per env
+    email_to:        me@localhost                                  # 
+    email_from:      noreply@localhost
+    email_format:    text/html                                     # 'text/html' or 'text/plain'
+    email_subject:   "(%host%) [%environment%] %type%: %message%"  # Other options in sfErrorNotitifer.class.php
+    report_errors:   true              # Notify for Symfony exceptions, and PHP errors
+    report_warnings: false             # Notify for Symfony exceptions, and PHP warnings
+    report_404:      false             # Also report 404 errors
