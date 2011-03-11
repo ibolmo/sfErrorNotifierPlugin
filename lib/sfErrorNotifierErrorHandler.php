@@ -62,7 +62,7 @@ class sfErrorNotifierErrorHandler
 		if (sfConfig::get('app_sf_error_notifier_plugin_report_errors')) $errors = array(E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR);
 		if (sfConfig::get('app_sf_error_notifier_plugin_report_warnings')) $errors = array_merge($errors, array(E_CORE_WARNING, E_COMPILE_WARNING, E_STRICT));
 
-		$type = $message = $file = $line;
+		$type = $message = $file = $line = null;
 		extract($error);
 		
 		if (in_array($type, $errors)) sfErrorNotifier::notifyException(new ErrorException($message, $type, $type, $file, $line));
