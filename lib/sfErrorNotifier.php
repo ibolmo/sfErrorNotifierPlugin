@@ -75,6 +75,6 @@ class sfErrorNotifier
 			->setSubject($subject)
 			->setBody($body, sfConfig::get('app_sf_error_notifier_plugin_email_format'));
 
-		$context->getMailer()->send($message);
+		if (sfConfig::get('app_sf_error_notifier_plugin_enabled')) $context->getMailer()->send($message);
 	}
 }
