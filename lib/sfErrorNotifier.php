@@ -50,6 +50,13 @@ class sfErrorNotifier
 		$context = sfContext::getInstance();
 		$configuration = $context->getConfiguration();
 
+    $request = $context->getRequest();
+    $url = (
+      ($request instanceof sfWebRequest)
+        ? $request->getUri()
+        : null
+    );
+
 		$data = array_merge(array(
 			'settingsTable' => sfYaml::dump(sfDebug::settingsAsArray()),
       'requestTable'  => sfYaml::dump(sfDebug::requestAsArray($context->getRequest())),
@@ -59,7 +66,8 @@ class sfErrorNotifier
       'type'          => $type,
       'message'       => $message,
       'host'          => gethostname(),
-      'environment'   => $context->getConfiguration()->getEnvironment()
+      'environment'   => $context->getConfiguration()->getEnvironment(),
+      'url'           => $url ?: '(not available)'
 		), $data);
 
 		$placeholders = array_map(function($key){ return "%$key%"; }, array_keys($data));
