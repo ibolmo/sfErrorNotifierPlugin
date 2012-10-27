@@ -19,6 +19,7 @@
   a { color: #333 }
   h1 { margin: 0 0 0 10px; padding: 10px 0 10px 0; font-weight: bold; font-size: 120% }
   h2 { margin: 0; padding: 5px 0; font-size: 110% }
+  h3 { margin: 0; padding: 5px 0; font-size: 100% }
   ul { padding-left: 20px; list-style: decimal }
   ul li { padding-bottom: 5px; margin: 0 }
   ol { font-family: monospace; white-space: pre; list-style-position: inside; margin: 0; padding: 10px 0 }
