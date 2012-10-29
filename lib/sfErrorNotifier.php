@@ -75,7 +75,16 @@ class sfErrorNotifier
 		$subject = strtr(sfConfig::get('app_sf_error_notifier_plugin_email_subject'), array_combine($placeholders, array_values($data)));
 
     $configuration->loadHelpers('Partial');
+
+    /* Temporarily set the request format to HTML for the email.
+     *
+     * This prevents issues if the incoming sf_format value is something
+     *  different (e.g., 'js').
+     */
+    $oldFormat = $request->getRequestFormat();
+    $request->setRequestFormat('html');
 		$body = get_partial('sfErrorNotifier/notify', $data);
+    $request->setRequestFormat($oldFormat);
 
 		$message = Swift_Message::newInstance()
 			->setFrom(sfConfig::get('app_sf_error_notifier_plugin_email_from'))
